@@ -28,15 +28,6 @@ public class EmployeeController {
         return employeeService.findAllEmployees(page, size, sortBy);
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Employee saveEmployee(@RequestBody @Validated NewEmployeeDTO employeePayload, BindingResult validationResult) {
-        if (validationResult.hasErrors()) {
-            throw new BadRequestException(validationResult.getAllErrors().stream().map(ObjectError::getDefaultMessage).collect(Collectors.joining(", ")));
-        }
-        return employeeService.saveEmployee(employeePayload);
-    }
-
 
     @GetMapping("/{id}")
     public Employee getEmployeeById(@PathVariable UUID id) {

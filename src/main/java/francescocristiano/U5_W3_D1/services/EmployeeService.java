@@ -38,7 +38,7 @@ public class EmployeeService {
         employeeRepository.findByEmail(employeePayload.email()).ifPresent(employee -> {
             throw new BadRequestException("Email already exists");
         });
-        Employee newEmployee = new Employee(employeePayload.username(), employeePayload.name(), employeePayload.surname(), employeePayload.email());
+        Employee newEmployee = new Employee(employeePayload.username(), employeePayload.name(), employeePayload.surname(), employeePayload.email(), employeePayload.password());
         mailgunSender.sendRegistrationEmail(newEmployee);
         return employeeRepository.save(newEmployee);
     }
@@ -55,7 +55,7 @@ public class EmployeeService {
     }
 
     public Employee findEmployeeByIdAndUpdate(UUID id, NewEmployeeDTO updatedEmployeePayload) {
-        Employee updatedEmployee = new Employee(updatedEmployeePayload.username(), updatedEmployeePayload.name(), updatedEmployeePayload.surname(), updatedEmployeePayload.email());
+        Employee updatedEmployee = new Employee(updatedEmployeePayload.username(), updatedEmployeePayload.name(), updatedEmployeePayload.surname(), updatedEmployeePayload.email(), updatedEmployeePayload.password());
         Employee foundEmployee = findEmployeeById(id);
         foundEmployee.setUsername(updatedEmployee.getUsername());
         foundEmployee.setName(updatedEmployee.getName());
@@ -81,5 +81,9 @@ public class EmployeeService {
         Employee foundEmployee = findEmployeeById(id);
         foundEmployee.setAvatarUrl(cloudinaryUrl);
         return employeeRepository.save(foundEmployee);
+    }
+
+    public Employee findEmployeeByUsername(String username) {
+        return employeeRepository.findByUsername(username).orElseThrow(() -> new NotFoundException("Username with username " + username + " not found"));
     }
 }

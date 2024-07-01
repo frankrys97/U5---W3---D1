@@ -29,6 +29,8 @@ public class Employee {
     private String email;
     @Setter
     private String avatarUrl;
+    @Setter
+    private String password;
 
     @OneToMany(mappedBy = "employee")
 /*
@@ -40,12 +42,13 @@ public class Employee {
     private List<Device> devices;
 
 
-    public Employee(String username, String name, String surname, String email) {
+    public Employee(String username, String name, String surname, String email, String password) {
         this.username = username;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.avatarUrl = "https://ui-avatars.com/api/?name=" + name + "+" + surname;
+        this.password = password;
     }
 
 }
